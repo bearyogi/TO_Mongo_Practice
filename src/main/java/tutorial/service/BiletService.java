@@ -35,6 +35,22 @@ public class BiletService {
             return biletRepository.findByCenaLessThan(filterText);
         }
     }
+
+    public List<Bilet> findAllZamowienie(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return biletRepository.findAll();
+        } else {
+            return biletRepository.findByZamowienieContains(filterText);
+        }
+    }
+
+    public List<Bilet> findAllMiejsce(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return biletRepository.findAll();
+        } else {
+            return biletRepository.findByMiejsce(filterText);
+        }
+    }
     public long count() {
         return biletRepository.count();
     }

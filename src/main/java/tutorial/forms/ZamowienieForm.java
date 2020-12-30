@@ -13,12 +13,18 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import tutorial.entity.Klient;
+import tutorial.entity.Seans;
 import tutorial.entity.Zamowienie;
+
+import java.util.List;
 
 public class ZamowienieForm extends FormLayout {
 
     ComboBox<Zamowienie.Platnosc> typPlatnosci = new ComboBox<>("platnosc");
     ComboBox<Zamowienie.Status> status = new ComboBox<>("status");
+    ComboBox<Klient> klient = new ComboBox("klient");
+    ComboBox<Seans> seans = new ComboBox("seans");
     TextField liczbaBiletow = new TextField("liczbaBiletow");
     TextField kwota = new TextField("kwota");
 
@@ -29,28 +35,39 @@ public class ZamowienieForm extends FormLayout {
     Binder<Zamowienie> binder = new Binder<>(Zamowienie.class);
     private Zamowienie zamowienie;
 
-    public ZamowienieForm() {
+    public ZamowienieForm(List<Klient>klienci, List<Seans> seanse) {
         typPlatnosci.setRequired(true);
         status.setRequired(true);
         liczbaBiletow.setRequired(true);
         kwota.setRequired(true);
+        klient.setRequired(true);
+        seans.setRequired(true);
 
         addClassName("seans-form");
         typPlatnosci.setItems(Zamowienie.Platnosc.values());
         status.setItems(Zamowienie.Status.values());
+
+        klient.setItems(klienci);
+        klient.setItemLabelGenerator(Klient::getNazwisko);
+
+        seans.setItems(seanse);
+        seans.setItemLabelGenerator(Seans::toString);
         binder.bindInstanceFields(this);
         add(
                 typPlatnosci,
                 status,
                 liczbaBiletow,
                 kwota,
+                klient,
+                seans,
                 createButtonsLayout()
         );
         binder.forField(typPlatnosci).withValidator(typPlatnosci -> !typPlatnosci.equals(""),"typPlatnosci nie może być pusty!").bind(Zamowienie::getTypPlatnosci, Zamowienie::setTypPlatnosci);
         binder.forField(status).withValidator(status -> !status.equals(""),"status nie może być pusty!").bind(Zamowienie::getStatus, Zamowienie::setStatus);
         binder.forField(liczbaBiletow).withValidator(liczbaBiletow -> liczbaBiletow.length() > 0,"liczbaBiletow nie może być pusta!").bind(Zamowienie::getLiczbaBiletow, Zamowienie::setLiczbaBiletow);
         binder.forField(kwota).withValidator(kwota -> kwota.length() > 0,"kwota nie może być pusta!").bind(Zamowienie::getKwota, Zamowienie::setKwota);
-
+        binder.forField(klient).withValidator(klient -> !klient.equals(""),"klient nie może być pusty!").bind(Zamowienie::getKlient, Zamowienie::setKlient);
+        binder.forField(seans).withValidator(seans -> !seans.equals(""),"seans nie może być pusty!").bind(Zamowienie::getSeans, Zamowienie::setSeans);
 
     }
     public void setZamowienie(Zamowienie zamowienie) {

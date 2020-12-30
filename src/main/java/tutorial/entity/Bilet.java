@@ -30,6 +30,14 @@ public class Bilet implements Cloneable{
     @NotEmpty
     private String cena;
 
+    @NotNull
+    @NotEmpty
+    private Zamowienie zamowienie;
+
+    @NotNull
+    @NotEmpty
+    private Miejsce miejsce;
+
     public Bilet clone() {
         try {
             return (Bilet)super.clone();
@@ -39,6 +47,6 @@ public class Bilet implements Cloneable{
     }
     @Override
     public String toString(){
-        return ulga + " " + cena;
+        return ulga + " " + cena + " " + zamowienie + " " + miejsce;
     }
 }

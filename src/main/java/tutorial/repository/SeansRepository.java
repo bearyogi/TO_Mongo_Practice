@@ -12,5 +12,7 @@ public interface SeansRepository extends MongoRepository<Seans, String> {
     List<Seans> findByNapisyContains(String text);
     List<Seans> findByDataContains(String text);
     List<Seans> findByGodzinaContains(String text);
+    List<Seans> findBySalaContains(String text);
+    List<Seans> findByFilmContains(String text);
 }
 

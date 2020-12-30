@@ -35,6 +35,13 @@ public class MiejsceService {
             return miejsceRepository.findByNumerMiejsca(filterText);
         }
     }
+    public List<Miejsce> findAllSala(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return miejsceRepository.findAll();
+        } else {
+            return miejsceRepository.findBySala(filterText);
+        }
+    }
     public long count() {
         return miejsceRepository.count();
     }

@@ -14,6 +14,8 @@ import tutorial.MainView;
 import tutorial.entity.Bilet;
 import tutorial.forms.BiletForm;
 import tutorial.service.BiletService;
+import tutorial.service.MiejsceService;
+import tutorial.service.ZamowienieService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +30,18 @@ public class BiletView extends VerticalLayout {
     Grid<Bilet> grid = new Grid<>(Bilet.class);
     TextField filterTextUlga = new TextField();
     TextField filterTextCena = new TextField();
-
+    TextField filterTextZamowienie = new TextField();
+    TextField filterTextMiejsce = new TextField();
     BiletService biletService;
 
-    public BiletView(BiletService biletService) {
+    public BiletView(BiletService biletService, MiejsceService miejsceService, ZamowienieService zamowienieService) {
         this.biletService = biletService;
         addClassName("bilet-view");
         setSizeFull();
         configureGrid();
 
 
-        form = new BiletForm();
+        form = new BiletForm(miejsceService.findAll(),zamowienieService.findAll());
         form.addListener(BiletForm.SaveEvent.class, this::saveBilet);
         form.addListener(BiletForm.DeleteEvent.class, this::deleteBilet);
         form.addListener(BiletForm.CloseEvent.class, e -> closeEditor());
@@ -75,9 +78,19 @@ public class BiletView extends VerticalLayout {
         filterTextCena.setValueChangeMode(ValueChangeMode.LAZY);
         filterTextCena.addValueChangeListener(e -> updateList());
 
+        filterTextZamowienie.setPlaceholder("Filtruj zamowienie");
+        filterTextZamowienie.setClearButtonVisible(true);
+        filterTextZamowienie.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextZamowienie.addValueChangeListener(e -> updateList());
+
+        filterTextMiejsce.setPlaceholder("Filtruj miejsce");
+        filterTextMiejsce.setClearButtonVisible(true);
+        filterTextMiejsce.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextMiejsce.addValueChangeListener(e -> updateList());
+
         Button addBiletButton = new Button("Dodaj bilet", click -> addBilet());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextUlga,filterTextCena,addBiletButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextUlga,filterTextCena,filterTextZamowienie,filterTextMiejsce,addBiletButton, closeFormButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -90,7 +103,7 @@ public class BiletView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("bilet-grid");
         grid.setSizeFull();
-        grid.setColumns("ulga", "cena");
+        grid.setColumns("ulga", "cena","zamowienie","miejsce");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -117,7 +130,8 @@ public class BiletView extends VerticalLayout {
         List<Bilet> list = new ArrayList<>();
         list.addAll(biletService.findAll(filterTextUlga.getValue()));
         list.retainAll(biletService.findAllCena(filterTextCena.getValue()));
-
+        list.retainAll(biletService.findAllZamowienie(filterTextZamowienie.getValue()));
+        list.retainAll(biletService.findAllMiejsce(filterTextMiejsce.getValue()));
         grid.setItems(list);
     }
 }

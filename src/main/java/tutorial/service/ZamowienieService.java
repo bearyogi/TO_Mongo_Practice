@@ -51,6 +51,22 @@ public class ZamowienieService {
             return zamowienieRepository.findByKwotaLessThan(filterText);
         }
     }
+
+    public List<Zamowienie> findAllKlient(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return zamowienieRepository.findAll();
+        } else {
+            return zamowienieRepository.findByKlientContains(filterText);
+        }
+    }
+
+    public List<Zamowienie> findAllSeans(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return zamowienieRepository.findAll();
+        } else {
+            return zamowienieRepository.findBySeansContains(filterText);
+        }
+    }
     public long count() {
         return zamowienieRepository.count();
     }

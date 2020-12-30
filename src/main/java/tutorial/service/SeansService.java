@@ -51,6 +51,23 @@ public class SeansService {
             return seansRepository.findByGodzinaContains(filterText);
         }
     }
+
+    public List<Seans> findAllSala(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return seansRepository.findAll();
+        } else {
+            return seansRepository.findBySalaContains(filterText);
+        }
+    }
+
+    public List<Seans> findAllFilm(String filterText){
+        if(filterText == null || filterText.isEmpty()) {
+            return seansRepository.findAll();
+        } else {
+            return seansRepository.findByFilmContains(filterText);
+        }
+    }
+
     public long count() {
         return seansRepository.count();
     }

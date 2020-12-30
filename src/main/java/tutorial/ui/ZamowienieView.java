@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import tutorial.MainView;
 import tutorial.entity.Zamowienie;
 import tutorial.forms.ZamowienieForm;
+import tutorial.service.KlientService;
+import tutorial.service.SeansService;
 import tutorial.service.ZamowienieService;
 
 import java.util.ArrayList;
@@ -30,17 +32,18 @@ public class ZamowienieView extends VerticalLayout {
     TextField filterTextStatus = new TextField();
     TextField filterTextLiczbaBiletow = new TextField();
     TextField filterTextKwota = new TextField();
-
+    TextField filterTextKlient = new TextField();
+    TextField filterTextSeans = new TextField();
     ZamowienieService zamowienieService;
 
-    public ZamowienieView(ZamowienieService zamowienieService) {
+    public ZamowienieView(ZamowienieService zamowienieService, SeansService seansService, KlientService klientService) {
         this.zamowienieService = zamowienieService;
         addClassName("seans-view");
         setSizeFull();
         configureGrid();
 
 
-        form = new ZamowienieForm();
+        form = new ZamowienieForm(klientService.findAll(),seansService.findAll());
         form.addListener(ZamowienieForm.SaveEvent.class, this::saveZamowienie);
         form.addListener(ZamowienieForm.DeleteEvent.class, this::deleteZamowienie);
         form.addListener(ZamowienieForm.CloseEvent.class, e -> closeEditor());
@@ -87,10 +90,19 @@ public class ZamowienieView extends VerticalLayout {
         filterTextKwota.setValueChangeMode(ValueChangeMode.LAZY);
         filterTextKwota.addValueChangeListener(e -> updateList());
 
+        filterTextKlient.setPlaceholder("Filtruj klient");
+        filterTextKlient.setClearButtonVisible(true);
+        filterTextKlient.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextKlient.addValueChangeListener(e -> updateList());
+
+        filterTextSeans.setPlaceholder("Filtruj seans");
+        filterTextSeans.setClearButtonVisible(true);
+        filterTextSeans.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextSeans.addValueChangeListener(e -> updateList());
 
         Button addSeansButton = new Button("Dodaj zamowienie", click -> addZamowienie());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextTypPlatnosci,filterTextStatus,filterTextLiczbaBiletow,filterTextKwota,addSeansButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextTypPlatnosci,filterTextStatus,filterTextLiczbaBiletow,filterTextKwota,filterTextKlient,filterTextSeans,addSeansButton, closeFormButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -103,7 +115,7 @@ public class ZamowienieView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("zamowienie-grid");
         grid.setSizeFull();
-        grid.setColumns("typPlatnosci", "status","liczbaBiletow","kwota");
+        grid.setColumns("typPlatnosci", "status","liczbaBiletow","kwota","klient","seans");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -132,6 +144,8 @@ public class ZamowienieView extends VerticalLayout {
         list.retainAll(zamowienieService.findAllStatus(filterTextStatus.getValue()));
         list.retainAll(zamowienieService.findAllLiczbaBiletow(filterTextLiczbaBiletow.getValue()));
         list.retainAll(zamowienieService.findAllKwota(filterTextKwota.getValue()));
+        list.retainAll(zamowienieService.findAllKlient(filterTextKlient.getValue()));
+        list.retainAll(zamowienieService.findAllSeans(filterTextSeans.getValue()));
         grid.setItems(list);
     }
 }

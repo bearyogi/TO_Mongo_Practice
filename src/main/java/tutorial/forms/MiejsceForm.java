@@ -6,6 +6,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -13,12 +14,15 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import tutorial.entity.Miejsce;
+import tutorial.entity.Sala;
+
+import java.util.List;
 
 public class MiejsceForm extends FormLayout {
 
     TextField numerRzedu= new TextField("numerRzedu");
     TextField numerMiejsca = new TextField("numerMiejsca");
-
+    ComboBox<Sala> sala = new ComboBox("sala");
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
@@ -26,22 +30,26 @@ public class MiejsceForm extends FormLayout {
     Binder<Miejsce> binder = new Binder<>(Miejsce.class);
     private Miejsce miejsce;
 
-    public MiejsceForm() {
+    public MiejsceForm(List<Sala> sale) {
         numerRzedu.setRequired(true);
         numerMiejsca.setRequired(true);
+        sala.setRequired(true);
         addClassName("miejsce-form");
+        sala.setItems(sale);
+        sala.setItemLabelGenerator(Sala::getNrSali);
         binder.bindInstanceFields(this);
         add(
                 numerRzedu,
                 numerMiejsca,
+                sala,
                 createButtonsLayout()
         );
         binder.forField(numerRzedu).withValidator(numerRzedu -> numerRzedu.length() > 0,"rzad nie może być pusty!").bind(Miejsce::getNumerMiejsca, Miejsce::setNumerMiejsca);
         binder.forField(numerMiejsca).withValidator(numerMiejsca -> numerMiejsca.length() > 0,"miejsce nie może być puste!").bind(Miejsce::getNumerRzedu, Miejsce::setNumerRzedu);
-
+        binder.forField(sala).withValidator(sala -> !sala.equals(""), "sala nie może być pusta!").bind(Miejsce::getSala,Miejsce::setSala);
 
     }
-    public void setBilet(Miejsce miejsce) {
+    public void setMiejsce(Miejsce miejsce) {
         this.miejsce = miejsce;
         binder.readBean(miejsce);
     }

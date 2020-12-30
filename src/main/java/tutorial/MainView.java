@@ -5,7 +5,9 @@ import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,13 +21,13 @@ import tutorial.ui.*;
 
 import java.util.Optional;
 
-//@JsModule("./styles/shared-styles.js")
+@JsModule("./styles/shared-styles.js")
 @CssImport("./styles/views/main/shared-styles.css")
 @PWA(name = "KinoApplication", shortName = "Kino", enableInstallPrompt = false)
 public class MainView extends AppLayout {
 
     private final Tabs menu;
-    private H1 viewTitle;
+    private H3 viewTitle;
 
     public MainView() {
         setPrimarySection(Section.DRAWER);
@@ -35,14 +37,14 @@ public class MainView extends AppLayout {
     }
 
     private Component createHeaderContent() {
-        VerticalLayout layout = new VerticalLayout();
+        HorizontalLayout layout = new HorizontalLayout();
         layout.setId("header");
         layout.getThemeList().set("dark", true);
         layout.setWidthFull();
         layout.setSpacing(false);
         layout.setAlignItems(FlexComponent.Alignment.START);
         layout.add(new DrawerToggle());
-        viewTitle = new H1();
+        viewTitle = new H3();
         layout.add(viewTitle);
 
         return layout;
@@ -59,7 +61,7 @@ public class MainView extends AppLayout {
 
     private Component[] createMenuItems() {
         return new Tab[] {
-                //createTab("Main", HelloView.class),
+                createTab("Main", HelloView.class),
                 createTab("Klient", KlientView.class),
                 createTab("Bilet", BiletView.class),
                 createTab("Film", FilmView.class),

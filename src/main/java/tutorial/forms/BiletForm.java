@@ -14,9 +14,14 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import tutorial.entity.Bilet;
+import tutorial.entity.Miejsce;
+import tutorial.entity.Zamowienie;
+
+import java.util.List;
 
 public class BiletForm extends FormLayout {
-
+    ComboBox<Miejsce> miejsce = new ComboBox("miejsce");
+    ComboBox<Zamowienie> zamowienie = new ComboBox("zamowienie");
     ComboBox<Bilet.Ulga> ulga = new ComboBox<>("ulga");
     TextField cena = new TextField("cena");
 
@@ -27,20 +32,30 @@ public class BiletForm extends FormLayout {
     Binder<Bilet> binder = new Binder<>(Bilet.class);
     private Bilet bilet;
 
-    public BiletForm() {
+    public BiletForm(List<Miejsce> miejsca, List<Zamowienie> zamowienia) {
         ulga.setRequired(true);
         cena.setRequired(true);
+        zamowienie.setRequired(true);
+        miejsce.setRequired(true);
         addClassName("bilet-form");
         ulga.setItems(Bilet.Ulga.values());
+        zamowienie.setItems(zamowienia);
+        zamowienie.setItemLabelGenerator(Zamowienie::toString);
+        miejsce.setItems(miejsca);
+        miejsce.setItemLabelGenerator(Miejsce::getNumerMiejsca);
+
         binder.bindInstanceFields(this);
         add(
                 ulga,
                 cena,
+                zamowienie,
+                miejsce,
                 createButtonsLayout()
         );
         binder.forField(ulga).withValidator(ulga -> !ulga.equals(""),"ulga nie może być pusta!").bind(Bilet::getUlga, Bilet::setUlga);
         binder.forField(cena).withValidator(cena -> cena.length() > 0,"cena nie może być pusta!").bind(Bilet::getCena, Bilet::setCena);
-
+        binder.forField(zamowienie).withValidator(zamowienie -> !zamowienie.equals(""),"zamowienie nie może być puste!").bind(Bilet::getZamowienie, Bilet::setZamowienie);
+        binder.forField(miejsce).withValidator(miejsce -> !miejsce.equals(""),"miejsce nie może być puste!").bind(Bilet::getMiejsce, Bilet::setMiejsce);
 
     }
     public void setBilet(Bilet bilet) {

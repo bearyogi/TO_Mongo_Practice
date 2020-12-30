@@ -10,4 +10,5 @@ import java.util.List;
 public interface MiejsceRepository extends MongoRepository<Miejsce, String> {
     List<Miejsce> findByNumerRzedu(String text);
     List<Miejsce> findByNumerMiejsca(String text);
+    List<Miejsce> findBySala(String text);
 }

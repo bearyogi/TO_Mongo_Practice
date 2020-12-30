@@ -44,6 +44,14 @@ public class Seans implements Cloneable{
     @NotEmpty
     private String godzina;
 
+    @NotNull
+    @NotEmpty
+    private Sala sala;
+
+    @NotNull
+    @NotEmpty
+    private Film film;
+
     @Override
     protected Seans clone() throws CloneNotSupportedException {
         return (Seans)super.clone();
@@ -51,6 +59,6 @@ public class Seans implements Cloneable{
 
     @Override
     public String toString(){
-        return lektor + " " + napisy + " " + data + " " + godzina;
+        return lektor + " " + napisy + " " + data + " " + godzina + " " + sala + " " + film;
     }
 }

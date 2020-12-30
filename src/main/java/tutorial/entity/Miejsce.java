@@ -27,10 +27,14 @@ public class Miejsce implements Cloneable{
     @NotEmpty
     private String numerRzedu;
 
+    @NotNull
+    @NotEmpty
+    private Sala sala;
+
     @Override
     protected Miejsce clone() throws CloneNotSupportedException {
         return (Miejsce)super.clone();
     }
     @Override
-    public String toString(){return numerMiejsca + " " + numerRzedu;}
+    public String toString(){return numerMiejsca + " " + numerRzedu + " " + sala;}
 }

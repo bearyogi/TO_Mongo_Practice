@@ -10,4 +10,6 @@ import java.util.List;
 public interface BiletRepository extends MongoRepository<Bilet, String> {
     List<Bilet> findByUlgaContains(String text);
     List<Bilet> findByCenaLessThan(String text);
+    List<Bilet> findByZamowienieContains(String text);
+    List<Bilet> findByMiejsce(String text);
 }

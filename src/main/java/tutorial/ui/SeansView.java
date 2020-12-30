@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import tutorial.MainView;
 import tutorial.entity.Seans;
 import tutorial.forms.SeansForm;
+import tutorial.service.FilmService;
+import tutorial.service.SalaService;
 import tutorial.service.SeansService;
 
 import java.util.ArrayList;
@@ -30,17 +32,18 @@ public class SeansView extends VerticalLayout {
     TextField filterTextNapisy = new TextField();
     TextField filterTextData = new TextField();
     TextField filterTextGodzina = new TextField();
-
+    TextField filterTextSala = new TextField();
+    TextField filterTextFilm = new TextField();
     SeansService seansService;
 
-    public SeansView(SeansService seansService) {
+    public SeansView(SeansService seansService, SalaService salaService, FilmService filmService) {
         this.seansService = seansService;
         addClassName("seans-view");
         setSizeFull();
         configureGrid();
 
 
-        form = new SeansForm();
+        form = new SeansForm(filmService.findAll(),salaService.findAll());
         form.addListener(SeansForm.SaveEvent.class, this::saveSeans);
         form.addListener(SeansForm.DeleteEvent.class, this::deleteSeans);
         form.addListener(SeansForm.CloseEvent.class, e -> closeEditor());
@@ -87,10 +90,19 @@ public class SeansView extends VerticalLayout {
         filterTextGodzina.setValueChangeMode(ValueChangeMode.LAZY);
         filterTextGodzina.addValueChangeListener(e -> updateList());
 
+        filterTextSala.setPlaceholder("Filtruj sale");
+        filterTextSala.setClearButtonVisible(true);
+        filterTextSala.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextSala.addValueChangeListener(e -> updateList());
+
+        filterTextFilm.setPlaceholder("Filtruj film");
+        filterTextFilm.setClearButtonVisible(true);
+        filterTextFilm.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextFilm.addValueChangeListener(e -> updateList());
 
         Button addSeansButton = new Button("Dodaj seans", click -> addSeans());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextLektor,filterTextNapisy,filterTextData,filterTextGodzina,addSeansButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextLektor,filterTextNapisy,filterTextData,filterTextGodzina,filterTextSala,filterTextFilm,addSeansButton, closeFormButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -103,7 +115,7 @@ public class SeansView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("seans-grid");
         grid.setSizeFull();
-        grid.setColumns("lektor", "napisy","data","godzina");
+        grid.setColumns("lektor", "napisy","data","godzina","sala","film");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -132,6 +144,8 @@ public class SeansView extends VerticalLayout {
         list.retainAll(seansService.findAllNapisy(filterTextNapisy.getValue()));
         list.retainAll(seansService.findAllData(filterTextData.getValue()));
         list.retainAll(seansService.findAllGodzina(filterTextGodzina.getValue()));
+        list.retainAll(seansService.findAllSala(filterTextSala.getValue()));
+        list.retainAll(seansService.findAllFilm(filterTextFilm.getValue()));
         grid.setItems(list);
     }
 }

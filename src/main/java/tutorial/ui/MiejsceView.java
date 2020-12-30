@@ -14,6 +14,7 @@ import tutorial.MainView;
 import tutorial.entity.Miejsce;
 import tutorial.forms.MiejsceForm;
 import tutorial.service.MiejsceService;
+import tutorial.service.SalaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +29,18 @@ public class MiejsceView extends VerticalLayout {
     Grid<Miejsce> grid = new Grid<>(Miejsce.class);
     TextField filterTextNumerRzedu = new TextField();
     TextField filterTextNumerMiejsca = new TextField();
+    TextField filterTextSala = new TextField();
 
     MiejsceService miejsceService;
 
-    public MiejsceView(MiejsceService miejsceService) {
+    public MiejsceView(MiejsceService miejsceService, SalaService salaService) {
         this.miejsceService = miejsceService;
         addClassName("miejsce-view");
         setSizeFull();
         configureGrid();
 
 
-        form = new MiejsceForm();
+        form = new MiejsceForm(salaService.findAll());
         form.addListener(MiejsceForm.SaveEvent.class, this::saveMiejsce);
         form.addListener(MiejsceForm.DeleteEvent.class, this::deleteMiejsce);
         form.addListener(MiejsceForm.CloseEvent.class, e -> closeEditor());
@@ -75,9 +77,14 @@ public class MiejsceView extends VerticalLayout {
         filterTextNumerMiejsca.setValueChangeMode(ValueChangeMode.LAZY);
         filterTextNumerMiejsca.addValueChangeListener(e -> updateList());
 
+        filterTextSala.setPlaceholder("Filtruj sale");
+        filterTextSala.setClearButtonVisible(true);
+        filterTextSala.setValueChangeMode(ValueChangeMode.LAZY);
+        filterTextSala.addValueChangeListener(e -> updateList());
+
         Button addBiletButton = new Button("Dodaj miejsce", click -> addMiejsce());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextNumerRzedu,filterTextNumerMiejsca,addBiletButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextNumerRzedu,filterTextNumerMiejsca,filterTextSala,addBiletButton, closeFormButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -90,7 +97,7 @@ public class MiejsceView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("miejsce-grid");
         grid.setSizeFull();
-        grid.setColumns("numerRzedu", "numerMiejsca");
+        grid.setColumns("numerRzedu", "numerMiejsca", "sala");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
@@ -101,14 +108,14 @@ public class MiejsceView extends VerticalLayout {
         if (miejsce == null) {
             closeEditor();
         } else {
-            form.setBilet(miejsce);
+            form.setMiejsce(miejsce);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setBilet(null);
+        form.setMiejsce(null);
         form.setVisible(false);
         removeClassName("editing");
     }
@@ -117,7 +124,7 @@ public class MiejsceView extends VerticalLayout {
         List<Miejsce> list = new ArrayList<>();
         list.addAll(miejsceService.findAll(filterTextNumerRzedu.getValue()));
         list.retainAll(miejsceService.findAllCena(filterTextNumerMiejsca.getValue()));
-
+        list.retainAll(miejsceService.findAllSala(filterTextSala.getValue()));
         grid.setItems(list);
     }
 }

@@ -45,6 +45,14 @@ public enum Status{
     @NotEmpty
     private String kwota;
 
+    @NotNull
+    @NotEmpty
+    private Klient klient;
+
+    @NotNull
+    @NotEmpty
+    private Seans seans;
+
     @Override
     public Zamowienie clone() {
         try {
@@ -54,5 +62,5 @@ public enum Status{
         }
     }
     @Override
-    public String toString() {return typPlatnosci + " " + status + " " + liczbaBiletow + " " + kwota;}
+    public String toString() {return typPlatnosci + " " + status + " " + liczbaBiletow + " " + kwota + " " + klient + " " + seans;}
 }

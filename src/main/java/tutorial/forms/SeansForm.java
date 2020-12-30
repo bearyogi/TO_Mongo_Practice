@@ -14,12 +14,18 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import tutorial.entity.Film;
+import tutorial.entity.Sala;
 import tutorial.entity.Seans;
+
+import java.util.List;
 
 public class SeansForm extends FormLayout {
 
     ComboBox<Seans.Lektor> lektor = new ComboBox<>("lektor");
     ComboBox<Seans.Napisy> napisy = new ComboBox<>("napisy");
+    ComboBox<Sala> sala = new ComboBox<>("sala");
+    ComboBox<Film> film = new ComboBox<>("film");
     TextField godzina = new TextField("godzina");
     DatePicker data = new DatePicker("data");
 
@@ -30,28 +36,37 @@ public class SeansForm extends FormLayout {
     Binder<Seans> binder = new Binder<>(Seans.class);
     private Seans seans;
 
-    public SeansForm() {
+    public SeansForm(List<Film> filmy,List<Sala> sale) {
         lektor.setRequired(true);
         napisy.setRequired(true);
         godzina.setRequired(true);
         data.setRequired(true);
+        sala.setRequired(true);
+        film.setRequired(true);
 
         addClassName("seans-form");
         lektor.setItems(Seans.Lektor.values());
         napisy.setItems(Seans.Napisy.values());
+        sala.setItems(sale);
+        sala.setItemLabelGenerator(Sala::getNrSali);
+        film.setItems(filmy);
+        film.setItemLabelGenerator(Film::getTytul);
         binder.bindInstanceFields(this);
         add(
                 lektor,
                 napisy,
                 data,
                 godzina,
+                sala,
+                film,
                 createButtonsLayout()
         );
         binder.forField(lektor).withValidator(lektor -> !lektor.equals(""),"lektor nie może być puste!").bind(Seans::getLektor, Seans::setLektor);
         binder.forField(napisy).withValidator(napisy -> !napisy.equals(""),"napisy nie może być puste!").bind(Seans::getNapisy, Seans::setNapisy);
         binder.forField(data).withValidator(data -> !data.equals(""),"data nie może być pusta!").bind(Seans::getData, Seans::setData);
         binder.forField(godzina).withValidator(godzina -> godzina.length() > 0,"godzina nie może być pusta!").bind(Seans::getGodzina, Seans::setGodzina);
-
+        binder.forField(sala).withValidator(sala -> !sala.equals(""),"sala nie może być pusta!").bind(Seans::getSala, Seans::setSala);
+        binder.forField(film).withValidator(film -> !film.equals(""),"film nie może być pusty!").bind(Seans::getFilm, Seans::setFilm);
 
     }
     public void setSeans(Seans seans) {

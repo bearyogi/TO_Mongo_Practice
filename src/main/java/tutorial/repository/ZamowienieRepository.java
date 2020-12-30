@@ -12,5 +12,7 @@ public interface ZamowienieRepository extends MongoRepository<Zamowienie, String
     List<Zamowienie> findByStatusContains(String text);
     List<Zamowienie> findByLiczbaBiletowContains(String text);
     List<Zamowienie> findByKwotaLessThan(String text);
+    List<Zamowienie> findByKlientContains(String text);
+    List<Zamowienie> findBySeansContains(String text);
 }
 
