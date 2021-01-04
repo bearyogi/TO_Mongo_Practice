@@ -8,9 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Entity
 @Setter
 @Getter
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,6 +27,7 @@ public class Seans implements Cloneable{
     @Id
     @EqualsAndHashCode.Include
     private String seansId;
+
 
     @NotNull
     @NotEmpty

@@ -102,7 +102,8 @@ public class SeansView extends VerticalLayout {
 
         Button addSeansButton = new Button("Dodaj seans", click -> addSeans());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextLektor,filterTextNapisy,filterTextData,filterTextGodzina,filterTextSala,filterTextFilm,addSeansButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextLektor,filterTextNapisy,filterTextData,filterTextGodzina,addSeansButton, closeFormButton);
+        //filterTextSala,filterTextFilm
         toolbar.addClassName("toolbar");
         return toolbar;
     }

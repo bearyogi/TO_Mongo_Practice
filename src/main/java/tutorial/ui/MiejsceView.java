@@ -84,7 +84,8 @@ public class MiejsceView extends VerticalLayout {
 
         Button addBiletButton = new Button("Dodaj miejsce", click -> addMiejsce());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextNumerRzedu,filterTextNumerMiejsca,filterTextSala,addBiletButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextNumerRzedu,filterTextNumerMiejsca,addBiletButton, closeFormButton);
+        //,filterTextSala
         toolbar.addClassName("toolbar");
         return toolbar;
     }

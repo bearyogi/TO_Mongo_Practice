@@ -90,7 +90,8 @@ public class BiletView extends VerticalLayout {
 
         Button addBiletButton = new Button("Dodaj bilet", click -> addBilet());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextUlga,filterTextCena,filterTextZamowienie,filterTextMiejsce,addBiletButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextUlga,filterTextCena,addBiletButton, closeFormButton);
+        //filterTextZamowienie,filterTextMiejsce
         toolbar.addClassName("toolbar");
         return toolbar;
     }

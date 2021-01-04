@@ -102,7 +102,8 @@ public class ZamowienieView extends VerticalLayout {
 
         Button addSeansButton = new Button("Dodaj zamowienie", click -> addZamowienie());
         Button closeFormButton = new Button("Zamknij formularz", click -> closeEditor());
-        HorizontalLayout toolbar = new HorizontalLayout(filterTextTypPlatnosci,filterTextStatus,filterTextLiczbaBiletow,filterTextKwota,filterTextKlient,filterTextSeans,addSeansButton, closeFormButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterTextTypPlatnosci,filterTextStatus,filterTextLiczbaBiletow,filterTextKwota,addSeansButton, closeFormButton);
+        //filtertextSeans,Klient
         toolbar.addClassName("toolbar");
         return toolbar;
     }
