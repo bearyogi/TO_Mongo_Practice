@@ -11,7 +11,7 @@ import tutorial.MainView;
 @PageTitle("Home")
 public class HelloView extends VerticalLayout {
     public HelloView() {
-        var h1 = new H1("K I N O");
+        var h1 = new H1("A P L I K A C J A  K I N O");
         add(h1);
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
