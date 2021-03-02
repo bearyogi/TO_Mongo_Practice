@@ -2,13 +2,13 @@
 >Simple local - hosted web application with use of Vaadin and MongoDB.
 
 ## Table of contents
-* [General] (#general)
-* [Screenshots] (#screenshots)
-* [Techstack] (#techstack)
-* [Features] (#features)
-* [Setup] (#Setup)
-* [Status] (#Status)
-* [Contact] (#Contact)
+* [General](#general)
+* [Screenshots](#screenshots)
+* [Techstack](#techstack)
+* [Features](#features)
+* [Setup](#Setup)
+* [Status](#Status)
+* [Contact](#Contact)
 
 ## General
 This application contains a basic CRUD functions that operates on object database.
